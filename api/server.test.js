@@ -61,4 +61,11 @@ describe('server', () =>{
     });
   });
 
+  describe('POST /users', () => {
+    it('should res with new inserted user', async () => {
+      const res = await request(server).post('/users').send({name: 'kim'});
+      expect(res.status).toBe(201);
+    })
+  })
+
 });
