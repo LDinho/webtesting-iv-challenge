@@ -1,10 +1,37 @@
-const server = require('./server');
+const express = require('express');
+const server = require('./server.js');
+const db = require('../data/dbConfig');
 
-describe('server.js', () =>{
+server.use(express.json());
 
-  it('should set test env', () => {
+const request = require('supertest');
 
-    expect(process.env.DB_ENV).toBe('testing');
+describe('server', () =>{
 
+  beforeEach(() => {
+    return db('users').truncate()
   })
+
+  describe('environment', () => {
+    it('should set test env', () => {
+      expect(process.env.DB_ENV).toBe('testing');
+
+    });
+  });
+
+  describe('GET /', () => {
+    it('should return status 200', async () => {
+      const res = await request(server).get('/');
+      expect(res.status).toBe(200);
+    })
+    it('should return json', async () => {
+      const res = await request(server).get('/');
+      expect(res.type).toBe('application/json');
+    })
+    it('should return { api: "up"} for the root page', async () => {
+      const res = await request(server).get('/');
+      expect(res.body).toEqual({ api: "up"});
+    })
+  })
+
 })
