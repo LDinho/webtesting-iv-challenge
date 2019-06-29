@@ -7,5 +7,5 @@ module.exports = {
 }
 
 async function getUsers() {
-  return db('users')
+  return db('users');
 }
